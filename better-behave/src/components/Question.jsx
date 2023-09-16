@@ -1,17 +1,22 @@
-import React from 'react';
+import React, { useState } from 'react';
+import './loading.css';
+
 
 function Question() {
-    const fetchChatGPT = (color) => {
-        // Replace with your API endpoint and key
+  const [isLoading, setIsLoading] = useState(false);
+  const [responseMessage, setResponseMessage] = useState(null); // New state variable
+
+  const fetchChatGPT = (color) => {
+      setIsLoading(true); 
         const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-        const API_KEY = "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";
-//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
+        const API_KEY = "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";
+        //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
         const data = {
             model: "gpt-4",
             messages: [
                 {
                     role: "system",
-                    content: "you are a paper. when you get color name you always freestyle based on that color"
+                    content: "give description of the color"
                 },
                 {
                     role: "user",
@@ -30,32 +35,37 @@ function Question() {
         })
         .then(response => response.json())
         .then(data => {
-            const message = data.choices[0].message.content;
-            document.getElementById('responseBox').innerText = message;
+          const message = data.choices[0].message.content;
+          setResponseMessage(message); // Update the state with the response
+          setIsLoading(false); 
         })
         .catch(error => {
             console.error('Error:', error);
+            setIsLoading(false); 
         });
     }
-
     return (
-        <div>
-        <h1 className=''>Question 1: Tell me about Yourself</h1>
-        <div id="responseBox" className='border p-4 rounded-3xl rounded-bl-none bg-blue-500 shadow-sm'></div>
-            <button onClick={() => fetchChatGPT("blue")}>Blue</button>
-            <button onClick={() => fetchChatGPT("red")}>Red</button>
-            
-        </div>
-    );
+      <div>
+          <h1 className=''>Question 1: Tell me about Yourself</h1>
+          {responseMessage && <div id="responseBox" className='border p-4 rounded-3xl rounded-bl-none bg-blue-500 shadow-sm'>{responseMessage}</div>}
+          {isLoading && <div class="center">
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        <div class="wave"></div>
+        </div>  } {/* Display loading indicator based on state */}
 
-    function Audio() {
-        return (
-            <div className="Audio">
-                <h1>Audio Recorder</h1>
-                <AudioRecorder />
-            </div>
-        );
-    }
+          <button onClick={() => fetchChatGPT("blue")}>Blue</button>
+          <button onClick={() => fetchChatGPT("red")}>Red</button>
+      </div>
+  );
 }
+
 
 export default Question;
