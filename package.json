@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "aws-sdk": "^2.1459.0",
-    "react-audio-voice-recorder": "^2.1.2"
-  }
-}
