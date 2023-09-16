@@ -47,6 +47,15 @@ function Question() {
             
         </div>
     );
+
+    function Audio() {
+        return (
+            <div className="Audio">
+                <h1>Audio Recorder</h1>
+                <AudioRecorder />
+            </div>
+        );
+    }
 }
 
 export default Question;
