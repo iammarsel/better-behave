@@ -1,16 +1,18 @@
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebaseConfig';
-
+import { useNavigate } from 'react-router-dom'; // Import useHistory
 import { useState } from 'react';
 
 function SignUp() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate(); // Create a history object
   const handleSignUp = async () => {
     try {
       await createUserWithEmailAndPassword(auth, email, password);
       
+      navigate('/');
+
     } catch (error) {
       console.error('Sign up failed', error);
     }
