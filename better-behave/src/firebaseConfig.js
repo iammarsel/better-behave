@@ -1,9 +1,6 @@
 
 
-import { initializeApp } from 'firebase/app';
-import { getAuth } from "firebase/auth";
-
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: "AIzaSyAqmqvK57gWHj83JNaT4ZEfBM8-BWw9xS0",
   authDomain: "shellhacks-7e288.firebaseapp.com",
   projectId: "shellhacks-7e288",
@@ -13,8 +10,3 @@ const firebaseConfig = {
   measurementId: "G-1GWJK6H28C"
 };
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-//const db = getFirestore(app)
-export {auth};
