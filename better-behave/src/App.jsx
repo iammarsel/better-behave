@@ -6,6 +6,7 @@ import { useState,useEffect } from "react";
 import SignIn from './components/SignIn'
 import SignUp from './components/SignUp'
 import Question from './components/Question'
+import Starter from "./components/Starter";
 
 // import firebase from 'firebase/app';
 import { auth } from './firebase'; 
@@ -40,6 +41,7 @@ function App() {
             <Route path="/signin" element={<SignIn/>} />
             <Route path="/signup" element={<SignUp/>} />
             <Route path="/question" element={<Question/>} />
+            <Route path="/starter" element={<Starter/>} />
           </Routes>
         </Router>
     </div>
