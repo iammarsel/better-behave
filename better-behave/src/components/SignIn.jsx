@@ -1,6 +1,6 @@
 // src/components/SignIn.js
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
 // SignIn.js
 
 import { auth } from '../firebase';
@@ -10,6 +10,12 @@ function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const navigate = useNavigate(); // Create a Navigate object
+  
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider(auth);
+    signInWithPopup(auth,provider);
+  }
+  
   const handleSignIn = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
@@ -36,6 +42,7 @@ function SignIn() {
         onChange={(e) => setPassword(e.target.value)}
       />
       <button onClick={handleSignIn}>Sign In</button>
+      <button onClick={signInWithGoogle}>Sign In with Google</button>
     </div>
   );
 }
