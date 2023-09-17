@@ -10,6 +10,15 @@ body {
     margin-top: 20px;
     margin-bottom: 20px;
   }
+  .messages-container {
+    display: flex;
+    flex-direction: column-reverse;
+    max-height: 400px; /* Adjust as needed */
+    overflow-y: auto;
+    border: 1px solid #ccc;
+    padding: 10px;
+    margin-bottom: 20px;
+  }  
   .wave {
     width: 5px;
     height: 60px;

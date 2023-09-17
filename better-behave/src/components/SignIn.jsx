@@ -1,5 +1,7 @@
 import { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
+import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+// SignIn.js
+
 import { auth } from '../firebase';
 import { useNavigate } from 'react-router-dom';
 import logo from '../assets/logo_gimmejob.jpeg';
@@ -7,6 +9,7 @@ import logo from '../assets/logo_gimmejob.jpeg';
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errText, setErrText] = useState('');
   const navigate = useNavigate();
 
   const buttonStyle = {
@@ -18,13 +21,34 @@ function SignIn() {
     transition: 'background-color 0.3s ease',
   };
 
+  
+  const signInWithGoogle = () => {
+    const provider = new GoogleAuthProvider(auth);
+    signInWithPopup(auth,provider);
+  }
+  
   const handleSignIn = async () => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
       navigate('/');
     } catch (error) {
-      console.error('Sign in failed', error);
+      setErrText('Invalid Info, Try Again!')
     }
+  };
+
+  const inputStyle = {
+    width: '100%', // Make the input boxes take full width
+    padding: '12px', // Increase padding for better spacing
+    fontSize: '1.2em', // Increase font size
+    fontFamily: 'Arial, sans-serif', // Change font
+    marginBottom: '1em' // Add some space at the bottom of the input
+  };
+
+  const buttonStyle = {
+    width: '100%', // Make the button take full width
+    padding: '12px', // Increase padding for better spacing
+    fontSize: '1.2em', // Increase font size
+    fontFamily: 'Arial, sans-serif' // Change font
   };
 
   return (
@@ -82,6 +106,8 @@ function SignIn() {
       >
         Sign In
       </button>
+      <button onClick={signInWithGoogle}>Sign In with Google</button>
+      <h3 style={{color: 'red'}}>{errText}</h3>
     </div>
   );
 }

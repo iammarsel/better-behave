@@ -11,6 +11,8 @@ import Starter from "./components/Starter";
 import JobContext from "./components/JobContext";
 // import firebase from 'firebase/app';
 import { auth } from "./firebase";
+import ChartComponent from "./components/chartComponent";
+
 
 function App() {
   const [selectedJob, setSelectedJob] = useState("");
@@ -41,6 +43,7 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/question" element={<Question />} />
             <Route path="/starter" element={<Starter />} />
+            <Route path="/chart" element={<ChartComponent />} />
           </Routes>
         </Router>
       </JobContext.Provider>
