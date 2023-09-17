@@ -4,12 +4,14 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import logo from '../assets/logo_gimmejob.jpeg';
+import { db } from '../firebase';
 import { NavLink } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
 import "./loading.css";
 
 function Question() {
   const [jobPositions, setJobPositions] = useState([]);
   const [newJobPosition, setNewJobPosition] = useState("");
+  //const [finalScore, setFinalScore] = useState(100);
   const [selectedJob, setSelectedJob] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -32,6 +34,26 @@ function Question() {
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+  const handleTryAgain = () => {
+    setMessages((prevMessages) => [...prevMessages, "Try Again!"]);
+    fetchChatGPT("Try Again!");
+  };
+  const handleNextQuestion = () => {
+    setMessages((prevMessages) => [...prevMessages, "Next Question."]);
+    fetchChatGPT("Next Question.");
+  };
+  const handleEnoughForToday = () => {
+    setMessages((prevMessages) => [...prevMessages, "Enough for Today!"]);
+    fetchChatGPT("Enough for Today! ");
+    /*
+    const data = {
+      profession: newJobPosition,
+      score: finalScore,
+      date: 'right now'
+    };
+    db.collection('sessions').doc(newJobPosition).set(data);
+    */
+  };
 
   useEffect(() => {
     fetch("/jobPositions.txt")
@@ -69,7 +91,7 @@ function Question() {
   const fetchChatGPT = (job) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
+    const API_KEY = "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$";
 
     const data = {
       model: "gpt-4",
@@ -77,8 +99,8 @@ function Question() {
         {
           role: "system",
           content:
-            "Assume the role of an experienced HR recruiter specializing in high-level job positions, guiding candidates on how to excel in interviews. When I provide you with the job title, and if it's coding-related,  Based on this information, pose a relevant question and await the user's answer. Once the user responds, offer comprehensive feedback on their answer, highlighting areas for improvement and aspects they should focus on. Then, rate their response on a scale of 1 to 100 and inquire if they'd like to retry or proceed to another question. If the user is unsatisfied with a question or wishes to change the subject, they can prompt 'next question', and you should present a new one. Continue this process until the user indicates they're done by saying 'it's enough'",
-        },
+          "Pretend to be an experienced HR recruiter specializing in high-level job positions, guiding candidates on how to excel in interviews. When I provide you with the job title,  based on that job title pose a relevant question and await the user's answer. Once the user responds, offer comprehensive feedback on their answer, highlighting areas for improvement and aspects they should focus on. Then, rate their response on a scale of 1 to 100 and inquire if they'd like to retry or proceed to another question. If the user  requires to retry it, let him do it by the comman 'Try Again' and /or if they want to skip the question, they will say 'Next question', and you should present a new one. Continue this process until the user indicates they're done by saying 'enough for the day'.  After it called 'enough for the day', give average score of all answers, and sent it only 2 digit number, nothing else. while you are giving your questions avoid any introduction words and generate only question."
+      },
         ...messages.map((message) => ({ role: "user", content: message })),
         {
           role: "user",
@@ -164,9 +186,9 @@ function Question() {
           </div>
         ))}
 
-        <div className="live-transcript-container mt-5">
+        <div style={{marginTop: 'auto'}} className="live-transcript-container pt-full mt-5">
           <h4 className="text-xl mb-3">Live Transcript:</h4>
-          <div className="border m-5 h-10 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
+          <div style={{minHeight: '35px'}} className="border m-5 h-auto min-h-32 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
             {transcript}
           </div>
         </div>
@@ -181,7 +203,7 @@ function Question() {
       <p className="mt-5">Microphone: {listening ? "on" : "off"}</p>
       <div className=""></div>
 
-      <div className="flex space-x-4 mt-5">
+      <div className="flex space-x-4 m-auto mt-5">
         <button onClick={SpeechRecognition.startListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Start</button>
         <button onClick={SpeechRecognition.stopListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Stop</button>
         <button onClick={resetTranscript} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] p-2 w-20 rounded">Reset</button>
@@ -190,7 +212,7 @@ function Question() {
 
       <div className="buttons-container flex space-x-4 mt-5">
         <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Try Again</button>
-        <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Next Question</button>
+        <button onClick={() => { handleNextQuestion(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Next Question</button>
          <button onClick={() => { handleEnoughForToday(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Enough for Today!</button>
       </div>
     </div></div></div>

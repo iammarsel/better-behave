@@ -36,13 +36,12 @@ function Home2() {
 
   const [completed, setCompleted] = useState(0);
   const [mastered, setMastered] = useState(0);
-/*
   useEffect(() => {
     const collectionRef = db.collection('sessions');
     (async () => {
-      const snapshot = await collectionRef.count().get();
-      setCompleted(snapshot.data().count);
-      console.log(snapshot.data().count)
+      const snapshot = await collectionRef.get();
+      setCompleted(snapshot.size);
+      console.log(snapshot.size);
     })
     (async () => {
       const query = collectionRef.where('score', '>=', '80');
@@ -50,7 +49,6 @@ function Home2() {
       setMastered(snapshot.data().count);
     })
   })
-*/
 
 
   return (
