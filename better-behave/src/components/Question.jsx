@@ -1,18 +1,19 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import JobContext from "./JobContext";
 import "./loading.css";
 
 function Question() {
+    const { selectedJob, selectedType } = useContext(JobContext);
+
   const [isLoading, setIsLoading] = useState(false);
-  const { selectedJob, selectedType } = useContext(JobContext);
 
   const [responseMessage, setResponseMessage] = useState(null); // New state variable
 
   const fetchChatGPT = (color) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
-    //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
+    const API_KEY = "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";
+    //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
     const data = {
       model: "gpt-3.5-turbo",
       messages: [
