@@ -81,7 +81,7 @@ function Question() {
   const fetchChatGPT = (job) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
+    const API_KEY = "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$";
 
     const data = {
       model: "gpt-4",
@@ -178,7 +178,7 @@ function Question() {
 
         <div style={{marginTop: 'auto'}} className="live-transcript-container pt-full mt-5">
           <h4 className="text-xl mb-3">Live Transcript:</h4>
-          <div className="border m-5 h-10 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
+          <div style={{minHeight: '35px'}} className="border m-5 h-auto min-h-32 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
             {transcript}
           </div>
         </div>
