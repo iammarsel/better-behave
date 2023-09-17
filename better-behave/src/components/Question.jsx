@@ -5,26 +5,34 @@ import AudioRecorderButton from './AudioRecorderButton';
 
 function Question() {
     const { selectedJob, selectedType } = useContext(JobContext);
+  
+    const [isLoading, setIsLoading] = useState(false);
+    const [responseMessage, setResponseMessage] = useState(null);
 
-  const [isLoading, setIsLoading] = useState(false);
+    useEffect(() => {
+        // Fetch the API immediately upon loading
+        fetchChatGPT(selectedJob, selectedType);
+    }, []);
+  
+    const fetchChatGPT = (job, type) => {
+      setIsLoading(true);
+      const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
+      const API_KEY = "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";
+      const userContent = type 
+      ? `Job: ${job}, Interview Type: ${type}`
+      : `Job: ${job}`;
 
-  const [responseMessage, setResponseMessage] = useState(null); // New state variable
-
-  const fetchChatGPT = (color) => {
-    setIsLoading(true);
-    const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
-    //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
-    const data = {
+      const data = {
       model: "gpt-3.5-turbo",
       messages: [
         {
           role: "system",
-          content: "give description of the color",
+          content:
+            "Role: Assume the role of an expert HR recruiter specializing in high-level job positions. Your goal is to guide and evaluate candidates on interview performance. Procedure: Input: I'll provide a job title. If it's coding-related, I'll specify the interview type: technical, behavioral, or mixed. Questioning: Based on the input, pose a relevant interview question and wait for the user's response. Evaluation: After receiving the user's answer, provide detailed feedback. Highlight strengths and areas for improvement. Rate their response on a scale of 1 to 10. Navigation: If the user says 'next question', present a new one. If they say 'it's enough', conclude the session. Feedback Loop: After each session, ask the user for feedback on the AI's performance to ensure continuous improvement. Note: if there no indicatoin of technical or behavoiral type of interview go with mixed but do not sprecify for them. Dont reply to the first response with 'Great!' or words like that, procceed to the interview imediately"
         },
         {
           role: "user",
-          content: `Say ${color}`,
+          content: userContent,
         },
       ],
     };

@@ -8,6 +8,9 @@ const Starter = () => {
   const [jobPositions, setJobPositions] = useState([]);
   const [newJobPosition, setNewJobPosition] = useState("");
   const codingRelatedJobs = [
+    "IT Manager",
+    "Computer System Analyst",
+    "Electrical Engineering",
     "Software Developer",
     "iOS Developer",
     "Android Developer",
