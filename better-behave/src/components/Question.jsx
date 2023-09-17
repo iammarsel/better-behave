@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './loading.css';
-
+import AudioRecorderButton from './AudioRecorderButton';
 
 function Question() {
   const [isLoading, setIsLoading] = useState(false);
@@ -9,7 +9,7 @@ function Question() {
   const fetchChatGPT = (color) => {
       setIsLoading(true); 
         const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-        const API_KEY = "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";
+        const API_KEY = "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";
         //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
         const data = {
             model: "gpt-4",
@@ -63,7 +63,9 @@ function Question() {
 
           <button onClick={() => fetchChatGPT("blue")}>Blue</button>
           <button onClick={() => fetchChatGPT("red")}>Red</button>
+          <AudioRecorderButton />
       </div>
+      
   );
 }
 
