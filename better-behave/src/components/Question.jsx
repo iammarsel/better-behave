@@ -32,6 +32,18 @@ function Question() {
   if (!browserSupportsSpeechRecognition) {
     return <span>Browser doesn't support speech recognition.</span>;
   }
+  const handleTryAgain = () => {
+    setMessages((prevMessages) => [...prevMessages, "Try Again!"]);
+    fetchChatGPT("Try Again!");
+  };
+  const handleNextQuestion = () => {
+    setMessages((prevMessages) => [...prevMessages, "Next Question."]);
+    fetchChatGPT("Next Question.");
+  };
+  const handleEnoughForToday = () => {
+    setMessages((prevMessages) => [...prevMessages, "Enough for Today!"]);
+    fetchChatGPT("Enough for Today!");
+  };
 
   useEffect(() => {
     fetch("/jobPositions.txt")
@@ -164,7 +176,7 @@ function Question() {
           </div>
         ))}
 
-        <div className="live-transcript-container mt-5">
+        <div style={{marginTop: 'auto'}} className="live-transcript-container pt-full mt-5">
           <h4 className="text-xl mb-3">Live Transcript:</h4>
           <div className="border m-5 h-10 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
             {transcript}
@@ -181,7 +193,7 @@ function Question() {
       <p className="mt-5">Microphone: {listening ? "on" : "off"}</p>
       <div className=""></div>
 
-      <div className="flex space-x-4 mt-5">
+      <div className="flex space-x-4 m-auto mt-5">
         <button onClick={SpeechRecognition.startListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Start</button>
         <button onClick={SpeechRecognition.stopListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Stop</button>
         <button onClick={resetTranscript} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] p-2 w-20 rounded">Reset</button>
@@ -190,7 +202,7 @@ function Question() {
 
       <div className="buttons-container flex space-x-4 mt-5">
         <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Try Again</button>
-        <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Next Question</button>
+        <button onClick={() => { handleNextQuestion(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Next Question</button>
          <button onClick={() => { handleEnoughForToday(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Enough for Today!</button>
       </div>
     </div></div></div>
