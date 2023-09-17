@@ -30,7 +30,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App" >
       <JobContext.Provider
         value={{ selectedJob, setSelectedJob, selectedType, setSelectedType }}
       >
