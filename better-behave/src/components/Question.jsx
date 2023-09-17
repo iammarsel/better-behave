@@ -1,39 +1,88 @@
-import React, { useState, useEffect, useContext } from "react";
-import JobContext from "./JobContext";
+import React, { useState, useEffect } from "react";
+import "regenerator-runtime/runtime";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
+import logo from '../assets/logo_gimmejob.jpeg';
+import { NavLink } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
 import "./loading.css";
-import AudioRecorderButton from "./AudioRecorderButton";
 
 function Question() {
-  const { selectedJob, selectedType } = useContext(JobContext);
+  const [jobPositions, setJobPositions] = useState([]);
+  const [newJobPosition, setNewJobPosition] = useState("");
+  const [selectedJob, setSelectedJob] = useState("");
   const [messages, setMessages] = useState([]);
-
   const [isLoading, setIsLoading] = useState(false);
-  const [responseMessage, setResponseMessage] = useState(null);
+  const sendTranscriptToChatGPT = () => {
+    setMessages((prevMessages) => [...prevMessages, transcript]);
+    fetchChatGPT(transcript);
+  };
+
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+    browserSupportsContinuousListening,
+  } = useSpeechRecognition();
+
+  const startListening = () =>
+    SpeechRecognition.startListening({ continuous: true });
+
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   useEffect(() => {
-    // Fetch the API immediately upon loading
-    fetchChatGPT(selectedJob, selectedType);
+    fetch("/jobPositions.txt")
+      .then((response) => response.text())
+      .then((data) => {
+        const positions = data.split("\n").filter(Boolean);
+        setJobPositions(positions);
+      });
   }, []);
 
-  const fetchChatGPT = (job, type) => {
+  const handleAddJobPosition = () => {
+    const lowerCaseNewJobPosition = newJobPosition.toLowerCase();
+    const jobExists = jobPositions.some(
+      (job) => job.toLowerCase() === lowerCaseNewJobPosition
+    );
+
+    if (!jobExists) {
+      const formattedJobPosition = capitalizeFirstLetter(newJobPosition);
+      setJobPositions([...jobPositions, formattedJobPosition]);
+      setSelectedJob(formattedJobPosition);
+      setNewJobPosition("");
+    }
+  };
+
+  const capitalizeFirstLetter = (string) => {
+    return string
+      .split(" ")
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(" ");
+  };
+  const clearMessages = () => {
+    setMessages([]);
+  };
+
+  const fetchChatGPT = (job) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
-    const userContent = type
-      ? `Job: ${job}, Interview Type: ${type}`
-      : `Job: ${job}`;
+    const API_KEY = "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";
 
     const data = {
-      model: "gpt-3.5-turbo",
+      model: "gpt-4",
       messages: [
         {
           role: "system",
           content:
-            "Role: Assume the role of an expert HR recruiter specializing in high-level job positions. Your goal is to guide and evaluate candidates on interview performance. Procedure: Input: I'll provide a job title. If it's coding-related, I'll specify the interview type: technical, behavioral, or mixed. Questioning: Based on the input, pose a relevant interview question and wait for the user's response. Evaluation: After receiving the user's answer, provide detailed feedback. Highlight strengths and areas for improvement. Rate their response on a scale of 1 to 10. Navigation: If the user says 'next question', present a new one. If they say 'it's enough', conclude the session. Feedback Loop: After each session, ask the user for feedback on the AI's performance to ensure continuous improvement. Note: if there no indicatoin of technical or behavoiral type of interview go with mixed but do not sprecify for them. Dont reply to the first response with 'Great!' or words like that, procceed to the interview imediately. If an input 'Select a job position', instruct them to go back to the prevois page and select a jot position. ",
+            "Assume the role of an experienced HR recruiter specializing in high-level job positions, guiding candidates on how to excel in interviews. When I provide you with the job title, and if it's coding-related,  Based on this information, pose a relevant question and await the user's answer. Once the user responds, offer comprehensive feedback on their answer, highlighting areas for improvement and aspects they should focus on. Then, rate their response on a scale of 1 to 100 and inquire if they'd like to retry or proceed to another question. If the user is unsatisfied with a question or wishes to change the subject, they can prompt 'next question', and you should present a new one. Continue this process until the user indicates they're done by saying 'it's enough'",
         },
+        ...messages.map((message) => ({ role: "user", content: message })),
         {
           role: "user",
-          content: userContent,
+          content: job,
         },
       ],
     };
@@ -57,40 +106,94 @@ function Question() {
         setIsLoading(false);
       });
   };
+
   return (
-    <div>
-      <h1 className="">Question 1: Tell me about Yourself</h1>
-      <h1>Selected Job: {selectedJob}</h1>
-      <h2>Selected Interview Type: {selectedType}</h2>
-      <div className="messages-container">
+    <div style={{ backgroundColor: '#1A244D', color: '#FECC57' }} className="bg-[#1A244D] text-[#FECC57] min-h-screen flex flex-col items-center p-5">
+      <img src={logo} alt="Logo" className="absolute top-5 left-5 w-60" />
+
+      <h1 className=" mb-5">Welcome!</h1>
+
+      <div className="flex flex-row items-center justify-center">
+        <select
+          value={selectedJob}
+          onChange={(e) => setSelectedJob(e.target.value)}
+          className="bg-white text-black p-2 rounded"
+        >
+          <option value="">Select a job position</option>
+          {jobPositions.map((job) => (
+            <option key={job} value={job}>
+              {capitalizeFirstLetter(job)}
+            </option>
+          ))}
+          <option value="different">Different job...</option>
+        </select>
+
+        {selectedJob === "different" && (
+          <div className="flex space-x-2">
+            <input
+              type="text"
+              value={newJobPosition}
+              onChange={(e) => setNewJobPosition(e.target.value)}
+              placeholder="Specify your job position"
+              className="p-2 rounded"
+            />
+            <button  style={{ backgroundColor: '#FECC57', color: '#1A244D' }}  onClick={handleAddJobPosition} className="bg-[#FECC57] text-[#1A244D] p-2 rounded">Add</button>
+          </div>
+        )}
+
+        <button
+          onClick={() => {
+            clearMessages();
+            fetchChatGPT(selectedJob);
+          }} style={{ backgroundColor: '#FECC57', color: '#1A244D' }}
+          className="bg-[#FECC57] text-[#1A244D] mx-7 w-40 p-2 rounded"
+        >
+          Submit
+        </button>
+      </div>
+
+      {/* <h3 className="text-2xl mt-5">Selected Job: {selectedJob}</h3> */}
+<div className="flex flex-row">
+      <div className="messages-container mt-5 space-y-5 w-full max-w-xl">
         {messages.map((message, index) => (
           <div
             key={index}
-            className="border p-4 rounded-3xl rounded-bl-none bg-blue-500 shadow-sm mb-2"
+            className={`p-4 rounded-3xl shadow-sm mb-2 ${index % 2 === 0 ? " rounded-bl-none bg-yellow-200 text-blue-900 bg-[#FECC57] text-[#1A244D]" : " rounded-br-none bg-blue-200  text-black"}`}
           >
             {message}
           </div>
         ))}
-      </div>
-      {isLoading && (
-        <div className="center">
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
+
+        <div className="live-transcript-container mt-5">
+          <h4 className="text-xl mb-3">Live Transcript:</h4>
+          <div className="border m-5 h-10 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
+            {transcript}
+          </div>
         </div>
-      )}{" "}
-      {/* Display loading indicator based on state */}
-      <button onClick={() => fetchChatGPT("next question")}>Blue</button>
-      <button onClick={() => fetchChatGPT("red")}>Red</button>
-      <AudioRecorderButton />
-    </div>
+      </div>
+
+      <div className="center mx-5">
+        {...Array(10).fill().map((_, index) => (
+          <div key={index} className={`wave ${isLoading ? "active" : ""}`}></div>
+        ))}
+      </div>
+<div className="flex flex-col my-auto">
+      <p className="mt-5">Microphone: {listening ? "on" : "off"}</p>
+      <div className=""></div>
+
+      <div className="flex space-x-4 mt-5">
+        <button onClick={SpeechRecognition.startListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Start</button>
+        <button onClick={SpeechRecognition.stopListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Stop</button>
+        <button onClick={resetTranscript} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] p-2 w-20 rounded">Reset</button>
+        <button onClick={() => { sendTranscriptToChatGPT(); resetTranscript(); }} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] p-2 w-20 rounded">Send</button>
+      </div>
+
+      <div className="buttons-container flex space-x-4 mt-5">
+        <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Try Again</button>
+        <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Next Question</button>
+         <button onClick={() => { handleEnoughForToday(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Enough for Today!</button>
+      </div>
+    </div></div></div>
   );
 }
 

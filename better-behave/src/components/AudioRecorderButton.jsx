@@ -1,67 +1,34 @@
-import React, { useState, useRef } from 'react';
+import "regenerator-runtime/runtime";
+import React from "react";
+import SpeechRecognition, {
+  useSpeechRecognition,
+} from "react-speech-recognition";
 
-function AudioRecorderButton() {
-  const [recording, setRecording] = useState(false);
-  const [mediaRecorder, setMediaRecorder] = useState(null);
-  const audioRef = useRef(null);
-  const chunks = useRef([]);
+const AudioRecorderButton = () => {
+  const {
+    transcript,
+    listening,
+    resetTranscript,
+    browserSupportsSpeechRecognition,
+    browserSupportsContinuousListening,
+  } = useSpeechRecognition();
 
-  const startRecording = async () => {
-    try {
-      const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
-      const recorder = new MediaRecorder(stream);
 
-      recorder.ondataavailable = (event) => {
-        if (event.data.size > 0) {
-          chunks.current.push(event.data);
-        }
-      };
+  const startListening = () => SpeechRecognition.startListening({ continuous: true });
 
-      recorder.onstop = () => {
-        const audioBlob = new Blob(chunks.current, { type: 'audio/wav' });
-        audioRef.current.src = URL.createObjectURL(audioBlob);
 
-        // Handle storing the audioBlob here (e.g., send to a server, save locally, etc.)
-        // Example: You can send it to a server using the fetch API.
-        // fetch('/upload-audio', {
-        //   method: 'POST',
-        //   body: audioBlob,
-        // });
-
-        chunks.current = [];
-      };
-
-      recorder.start();
-      setRecording(true);
-      setMediaRecorder(recorder);
-    } catch (error) {
-      console.error('Error starting recording:', error);
-    }
-  };
-
-  const stopRecording = () => {
-    if (mediaRecorder && recording) {
-      mediaRecorder.stop();
-      setRecording(false);
-    }
-  };
-
-  const toggleRecording = () => {
-    if (recording) {
-      stopRecording();
-    } else {
-      startRecording();
-    }
-  };
+  if (!browserSupportsSpeechRecognition) {
+    return <span>Browser doesn't support speech recognition.</span>;
+  }
 
   return (
     <div>
-      <button onClick={toggleRecording}>
-        {recording ? 'Stop Recording' : 'Start Recording'}
-      </button>
-      <audio ref={audioRef} controls style={{ marginTop: '10px' }} />
+      <p>Microphone: {listening ? "on" : "off"}</p>
+      <button onClick={SpeechRecognition.startListening}>Start</button>
+      <button onClick={SpeechRecognition.stopListening}>Stop</button>
+      <button onClick={resetTranscript}>Reset</button>
+      <p>{transcript}</p>
     </div>
   );
-}
-
+};
 export default AudioRecorderButton;

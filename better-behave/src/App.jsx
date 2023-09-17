@@ -1,3 +1,5 @@
+
+import 'regenerator-runtime/runtime';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "./App.css";
 import React, { useState } from "react";
@@ -7,10 +9,10 @@ import { useEffect } from "react";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Question from "./components/Question";
-import Starter from "./components/Starter";
 import JobContext from "./components/JobContext";
 // import firebase from 'firebase/app';
 import { auth } from "./firebase";
+import AudioRecorderButton from "./components/AudioRecorderButton";
 
 
 function App() {
@@ -41,6 +43,8 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/question" element={<Question />} />
+            <Route path='/audio' element={<AudioRecorderButton/>} />
+
           </Routes>
         </Router>
       </JobContext.Provider>

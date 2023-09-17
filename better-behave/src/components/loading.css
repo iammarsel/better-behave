@@ -12,14 +12,35 @@ body {
   }
   .messages-container {
     display: flex;
-    flex-direction: column-reverse;
-    max-height: 400px; /* Adjust as needed */
+    flex-direction: column;
+    width: 600px;
+    height: 400px;
     overflow-y: auto;
+    overflow-x: hidden;  /* Hide horizontal overflow */
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 20px;
-  }  
+}
+
+/* Ensure child elements don't exceed the container's width */
+.messages-container > div {
+    max-width: 100%;  /* Limit width to 100% of parent */
+    box-sizing: border-box;  /* Include padding and border in the element's total width */
+    word-wrap: break-word;  /* Break long words to prevent overflow */
+}
+
+
+.live-transcript-container {
+    margin-top: auto;  /* Pushes the container to the bottom */
+    padding: 5px;
+    border-top: 1px solid #ccc;  /* Top border to separate from other messages */
+}
+
+  .wave.active {
+    opacity: 1;
+}
   .wave {
+    opacity: 0;
     width: 5px;
     height: 60px;
     background: linear-gradient(45deg, cyan, #fff);
