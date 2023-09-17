@@ -91,7 +91,7 @@ function Question() {
   const fetchChatGPT = (job) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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$";
+    const API_KEY = "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";
 
     const data = {
       model: "gpt-4",
