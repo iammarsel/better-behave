@@ -3,7 +3,7 @@ import "regenerator-runtime/runtime";
 import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
-
+import logo from '../assets/logo_gimmejob.jpeg';
 import { NavLink } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
 import "./loading.css";
 
@@ -69,7 +69,7 @@ function Question() {
   const fetchChatGPT = (job) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
+    const API_KEY = "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";
 
     const data = {
       model: "gpt-4",
@@ -108,19 +108,16 @@ function Question() {
   };
 
   return (
-    <div>
-      <h1>Welcome</h1>
-      <div
-        style={{
-          display: "flex",
-          flexDirection: "column",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
+    <div style={{ backgroundColor: '#1A244D', color: '#FECC57' }} className="bg-[#1A244D] text-[#FECC57] min-h-screen flex flex-col items-center p-5">
+      <img src={logo} alt="Logo" className="absolute top-5 left-5 w-60" />
+
+      <h1 className=" mb-5">Welcome!</h1>
+
+      <div className="flex flex-row items-center justify-center">
         <select
           value={selectedJob}
           onChange={(e) => setSelectedJob(e.target.value)}
+          className="bg-white text-black p-2 rounded"
         >
           <option value="">Select a job position</option>
           {jobPositions.map((job) => (
@@ -132,14 +129,15 @@ function Question() {
         </select>
 
         {selectedJob === "different" && (
-          <div style={{ marginTop: "10px" }}>
+          <div className="flex space-x-2">
             <input
               type="text"
               value={newJobPosition}
               onChange={(e) => setNewJobPosition(e.target.value)}
               placeholder="Specify your job position"
+              className="p-2 rounded"
             />
-            <button onClick={handleAddJobPosition}>Add</button>
+            <button  style={{ backgroundColor: '#FECC57', color: '#1A244D' }}  onClick={handleAddJobPosition} className="bg-[#FECC57] text-[#1A244D] p-2 rounded">Add</button>
           </div>
         )}
 
@@ -147,78 +145,55 @@ function Question() {
           onClick={() => {
             clearMessages();
             fetchChatGPT(selectedJob);
-          }}
+          }} style={{ backgroundColor: '#FECC57', color: '#1A244D' }}
+          className="bg-[#FECC57] text-[#1A244D] mx-7 w-40 p-2 rounded"
         >
           Submit
         </button>
       </div>
-      <h3>Selected Job: {selectedJob}</h3>
-      <div className="messages-container">
+
+      {/* <h3 className="text-2xl mt-5">Selected Job: {selectedJob}</h3> */}
+<div className="flex flex-row">
+      <div className="messages-container mt-5 space-y-5 w-full max-w-xl">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`border w-full m-5 p-4 rounded-3xl ${
-              index % 2 === 0
-                ? "rounded-bl-none bg-blue-500"
-                : " rounded-br-none bg-gray-300"
-            } shadow-sm mb-2`}
+            className={`p-4 rounded-3xl shadow-sm mb-2 ${index % 2 === 0 ? " rounded-bl-none bg-yellow-200 text-blue-900 bg-[#FECC57] text-[#1A244D]" : " rounded-br-none bg-blue-200  text-black"}`}
           >
             {message}
           </div>
         ))}
-        <div className="live-transcript-container">
-        <h4>Live Transcript:</h4>
-        <div className="border m-5 p-4 rounded-3xl bg-gray-300 shadow-sm mb-2">
-          {transcript}
+
+        <div className="live-transcript-container mt-5">
+          <h4 className="text-xl mb-3">Live Transcript:</h4>
+          <div className="border m-5 h-10 py-2 p-auto m-auto text-sm rounded-3xl bg-gray-300 text-black shadow-sm mb-2">
+            {transcript}
+          </div>
         </div>
       </div>
+
+      <div className="center mx-5">
+        {...Array(10).fill().map((_, index) => (
+          <div key={index} className={`wave ${isLoading ? "active" : ""}`}></div>
+        ))}
       </div>
-      <div className="center">
-        {...Array(10)
-          .fill()
-          .map((_, index) => (
-            <div
-              key={index}
-              className={`wave ${isLoading ? "active" : ""}`}
-            ></div>
-          ))}
+<div className="flex flex-col my-auto">
+      <p className="mt-5">Microphone: {listening ? "on" : "off"}</p>
+      <div className=""></div>
+
+      <div className="flex space-x-4 mt-5">
+        <button onClick={SpeechRecognition.startListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Start</button>
+        <button onClick={SpeechRecognition.stopListening} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] w-20 p-2 rounded">Stop</button>
+        <button onClick={resetTranscript} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] p-2 w-20 rounded">Reset</button>
+        <button onClick={() => { sendTranscriptToChatGPT(); resetTranscript(); }} style={{ backgroundColor: '#FECC57', color: '#1A244D' }} className="bg-[#FECC57] text-[#1A244D] p-2 w-20 rounded">Send</button>
       </div>
-      <p>Microphone: {listening ? "on" : "off"}</p>
-      <button onClick={SpeechRecognition.startListening}>Start</button>
-      <button onClick={SpeechRecognition.stopListening}>Stop</button>
-      <button onClick={resetTranscript}>Reset</button>
-      <button
-        onClick={() => {
-          sendTranscriptToChatGPT();
-          resetTranscript();
-        }}
-      >
-        {" "}
-        Send{" "}
-      </button>{" "}
-      <div
-        className="buttons-container"
-        style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
-      >
-        <button
-          onClick={() => {
-            handleTryAgain();
-            resetTranscript();
-          }}
-          style={{ marginRight: "10px" }}
-        >
-          Try Again
-        </button>
-        <button
-          onClick={() => {
-            handleEnoughForToday();
-            resetTranscript();
-          }}
-        >
-          Enough for Today!
-        </button>
+
+      <div className="buttons-container flex space-x-4 mt-5">
+        <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Try Again</button>
+        <button onClick={() => { handleTryAgain(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Next Question</button>
+         <button onClick={() => { handleEnoughForToday(); resetTranscript(); }} style={{ backgroundColor: '#233068', color: '#FECC57' }} className="shadow-xl w-44  rounded-lg px-6 py-2 mb-4 hover:bg-opacity-80 transition duration-200 p-2 rounded">Enough for Today!</button>
       </div>
-    </div>
+    </div></div></div>
   );
 }
 

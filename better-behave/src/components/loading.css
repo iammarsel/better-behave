@@ -13,13 +13,22 @@ body {
   .messages-container {
     display: flex;
     flex-direction: column;
-    width: 700px;
-    height: 500px;
+    width: 600px;
+    height: 400px;
     overflow-y: auto;
+    overflow-x: hidden;  /* Hide horizontal overflow */
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 20px;
 }
+
+/* Ensure child elements don't exceed the container's width */
+.messages-container > div {
+    max-width: 100%;  /* Limit width to 100% of parent */
+    box-sizing: border-box;  /* Include padding and border in the element's total width */
+    word-wrap: break-word;  /* Break long words to prevent overflow */
+}
+
 
 .live-transcript-container {
     margin-top: auto;  /* Pushes the container to the bottom */
