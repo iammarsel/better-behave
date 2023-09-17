@@ -15,6 +15,7 @@ function Question() {
   const [selectedJob, setSelectedJob] = useState('');
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const apiKey = process.env.REACT_APP_MY_API_KEY;
   const sendTranscriptToChatGPT = () => {
     setMessages((prevMessages) => [...prevMessages, transcript]);
     fetchChatGPT(transcript);
