@@ -113,7 +113,6 @@ function SignIn() {
       </button>
       <button
   onClick={signInWithGoogle}
-  style={googleButtonStyle}
   onMouseEnter={(e) => {
     e.target.style.backgroundColor = '#F2F2F2';
   }}

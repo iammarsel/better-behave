@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom'; // Updated import
 import { auth, db } from '../firebase';
 
@@ -27,22 +27,42 @@ function Home2() {
     date: 'testinggggg'
   };
   
-  db.collection('sessions').doc('Question 1').set(data);
+  //db.collection('sessions').doc('Question 1').set(data);
   const iframeStyle = {
     width: '150vh',
     height: '50vh',
     border: 'none',
   };
+
+  const [completed, setCompleted] = useState(0);
+  const [mastered, setMastered] = useState(0);
+/*
+  useEffect(() => {
+    const collectionRef = db.collection('sessions');
+    (async () => {
+      const snapshot = await collectionRef.count().get();
+      setCompleted(snapshot.data().count);
+      console.log(snapshot.data().count)
+    })
+    (async () => {
+      const query = collectionRef.where('score', '>=', '80');
+      const snapshot = await query.count().get();
+      setMastered(snapshot.data().count);
+    })
+  })
+*/
+
+
   return (
     <div>
       <h1>Welcome User!</h1>
-      <h3>Practiced: 10</h3>
-      <h3>Mastered: 4</h3>
+      <h3>Practiced: {completed}</h3>
+      <h3>Mastered: {mastered}</h3>
       <iframe src='http://localhost:5000/' style={iframeStyle} title="Chart" /> 
 
       <button onClick={handleSignOut}>Sign Out</button>
       <button>
-      <NavLink to="/starter">
+      <NavLink to="/question">
         New Interview Practice
       </NavLink>
       </button>
