@@ -8,7 +8,7 @@ export default function ChartComponent() {
 
   useEffect(() => {
     async function fetchChart() {
-      const response = await fetch('/charts/chart1'); // API endpoint
+      const response = await fetch('/charts/chart.png') // API endpoint
       const imageUrl = response.url; // Get URL of image
       setChart(imageUrl); // Set image state
     }
