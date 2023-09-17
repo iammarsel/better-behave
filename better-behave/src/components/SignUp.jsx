@@ -53,17 +53,19 @@ function SignUp() {
   const [password, setPassword] = useState('');
   const navigate = useNavigate();
 
+  
   const buttonStyle = {
-    backgroundColor: '#FECC57',
-    color: 'white',
-    padding: '8px 16px',
-    borderRadius: '8px',
-    cursor: 'pointer',
-    transition: 'background-color 0.3s ease',
-    width: '100%', // Make the button take full width
-    padding: '12px', // Increase padding for better spacing
-    fontSize: '1.2em', // Increase font size
-    fontFamily: 'Arial, sans-serif' // Change font
+    backgroundColor: "#FECC57",
+    color: "#233068",
+    padding: "8px 16px",
+    marginTop: '30px',
+    borderRadius: "8px",
+    cursor: "pointer",
+    transition: "background-color 0.3s ease",
+    width: "100%", // Make the button take full width
+    padding: "12px", // Increase padding for better spacing
+    fontSize: "1.2em", // Increase font size
+    fontFamily: "Arial, sans-serif", // Change font
   };
 
   const handleSignUp = async () => {
@@ -105,7 +107,7 @@ function SignUp() {
           width: '250px', // Adjust the width of the logo as needed
         }}
       />
-      <h2 className="text-3xl mb-4 text-white">Sign Up</h2>
+      <h1 className="text-3xl mb-4 text-white">Sign Up</h1>
       <input
         type="email"
         placeholder="Email"
@@ -118,7 +120,7 @@ function SignUp() {
         placeholder="Password"
         value={password}
         onChange={(e) => setPassword(e.target.value)}
-        className="px-4 py-2 border rounded-lg mb-2"
+        className="px-4 py-2 border m-2 rounded-lg mb-2"
       />
       <button
         onClick={handleSignUp}
