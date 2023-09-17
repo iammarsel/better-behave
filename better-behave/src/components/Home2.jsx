@@ -7,7 +7,7 @@ function Home2() {
       <h3>Practiced: 10</h3>
       <h3>Mastered: 4</h3>
       <button>
-      <NavLink to="/question">
+      <NavLink to="/starter">
         New Interview Practice
       </NavLink>
       </button>

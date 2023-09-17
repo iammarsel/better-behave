@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import './loading.css';
-import AudioRecorderButton from './AudioRecorderButton';
+
 
 function Question() {
+    const { selectedJob, selectedType } = useContext(JobContext);
+
   const [isLoading, setIsLoading] = useState(false);
+
   const [responseMessage, setResponseMessage] = useState(null); // New state variable
 
   const fetchChatGPT = (color) => {
       setIsLoading(true); 
         const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-        const API_KEY = "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";
+        const API_KEY = "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";
         //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
         const data = {
             model: "gpt-4",
@@ -63,11 +66,8 @@ function Question() {
 
           <button onClick={() => fetchChatGPT("blue")}>Blue</button>
           <button onClick={() => fetchChatGPT("red")}>Red</button>
-          <AudioRecorderButton />
       </div>
-      
   );
 }
-
 
 export default Question;
