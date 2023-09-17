@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Question from "./components/Question";
-import Starter from "./components/Starter";
 import JobContext from "./components/JobContext";
 // import firebase from 'firebase/app';
 import { auth } from "./firebase";

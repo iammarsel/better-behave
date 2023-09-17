@@ -6,7 +6,6 @@ import SpeechRecognition, {
 
 import { NavLink } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
 import "./loading.css";
-import AudioRecorderButton from "./AudioRecorderButton";
 
 function Question() {
   const [jobPositions, setJobPositions] = useState([]);
@@ -63,11 +62,14 @@ function Question() {
       .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join(" ");
   };
+  const clearMessages = () => {
+    setMessages([]);
+  };
 
   const fetchChatGPT = (job) => {
     setIsLoading(true);
     const API_ENDPOINT = "https://api.openai.com/v1/chat/completions";
-    const API_KEY = "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";
+    const API_KEY = "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";
 
     const data = {
       model: "gpt-4",
@@ -141,41 +143,81 @@ function Question() {
           </div>
         )}
 
-        <button onClick={() => fetchChatGPT(selectedJob)}>Submit</button>
+        <button
+          onClick={() => {
+            clearMessages();
+            fetchChatGPT(selectedJob);
+          }}
+        >
+          Submit
+        </button>
       </div>
       <h3>Selected Job: {selectedJob}</h3>
       <div className="messages-container">
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`border m-5 p-4 rounded-3xl ${
-              index % 2 === 0 ? "rounded-bl-none bg-blue-500" : " rounded-br-none bg-gray-300"
+            className={`border w-full m-5 p-4 rounded-3xl ${
+              index % 2 === 0
+                ? "rounded-bl-none bg-blue-500"
+                : " rounded-br-none bg-gray-300"
             } shadow-sm mb-2`}
           >
             {message}
           </div>
         ))}
-      </div>
-
-      {isLoading && (
-        <div className="center">
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
-          <div className="wave"></div>
+        <div className="live-transcript-container">
+        <h4>Live Transcript:</h4>
+        <div className="border m-5 p-4 rounded-3xl bg-gray-300 shadow-sm mb-2">
+          {transcript}
         </div>
-      )}
+      </div>
+      </div>
+      <div className="center">
+        {...Array(10)
+          .fill()
+          .map((_, index) => (
+            <div
+              key={index}
+              className={`wave ${isLoading ? "active" : ""}`}
+            ></div>
+          ))}
+      </div>
       <p>Microphone: {listening ? "on" : "off"}</p>
       <button onClick={SpeechRecognition.startListening}>Start</button>
       <button onClick={SpeechRecognition.stopListening}>Stop</button>
       <button onClick={resetTranscript}>Reset</button>
-      <button onClick={sendTranscriptToChatGPT}>Send</button>
+      <button
+        onClick={() => {
+          sendTranscriptToChatGPT();
+          resetTranscript();
+        }}
+      >
+        {" "}
+        Send{" "}
+      </button>{" "}
+      <div
+        className="buttons-container"
+        style={{ marginTop: "20px", display: "flex", justifyContent: "center" }}
+      >
+        <button
+          onClick={() => {
+            handleTryAgain();
+            resetTranscript();
+          }}
+          style={{ marginRight: "10px" }}
+        >
+          Try Again
+        </button>
+        <button
+          onClick={() => {
+            handleEnoughForToday();
+            resetTranscript();
+          }}
+        >
+          Enough for Today!
+        </button>
+      </div>
     </div>
   );
 }

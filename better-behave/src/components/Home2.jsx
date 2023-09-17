@@ -42,7 +42,7 @@ function Home2() {
 
       <button onClick={handleSignOut}>Sign Out</button>
       <button>
-      <NavLink to="/starter">
+      <NavLink to="/question">
         New Interview Practice
       </NavLink>
       </button>

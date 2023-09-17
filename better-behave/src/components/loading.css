@@ -13,14 +13,25 @@ body {
   .messages-container {
     display: flex;
     flex-direction: column;
-    max-width: 600px;
-    max-height: 400px;
+    width: 700px;
+    height: 500px;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
     margin-bottom: 20px;
-  }  
+}
+
+.live-transcript-container {
+    margin-top: auto;  /* Pushes the container to the bottom */
+    padding: 5px;
+    border-top: 1px solid #ccc;  /* Top border to separate from other messages */
+}
+
+  .wave.active {
+    opacity: 1;
+}
   .wave {
+    opacity: 0;
     width: 5px;
     height: 60px;
     background: linear-gradient(45deg, cyan, #fff);
