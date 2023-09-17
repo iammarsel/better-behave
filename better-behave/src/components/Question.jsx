@@ -4,12 +4,14 @@ import SpeechRecognition, {
   useSpeechRecognition,
 } from "react-speech-recognition";
 import logo from '../assets/logo_gimmejob.jpeg';
+import { db } from '../firebase';
 import { NavLink } from "react-router-dom"; // Assuming you're using react-router-dom for navigation
 import "./loading.css";
 
 function Question() {
   const [jobPositions, setJobPositions] = useState([]);
   const [newJobPosition, setNewJobPosition] = useState("");
+  //const [finalScore, setFinalScore] = useState(100);
   const [selectedJob, setSelectedJob] = useState("");
   const [messages, setMessages] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +44,15 @@ function Question() {
   };
   const handleEnoughForToday = () => {
     setMessages((prevMessages) => [...prevMessages, "Enough for Today!"]);
-    fetchChatGPT("Enough for Today!");
+    fetchChatGPT("Enough for Today! ");
+    /*
+    const data = {
+      profession: newJobPosition,
+      score: finalScore,
+      date: 'right now'
+    };
+    db.collection('sessions').doc(newJobPosition).set(data);
+    */
   };
 
   useEffect(() => {
