@@ -22,6 +22,7 @@
 // }
 
 // export default Home;
+import 'regenerator-runtime/runtime';
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 import logo from "../assets/logo_gimmejob.jpeg";

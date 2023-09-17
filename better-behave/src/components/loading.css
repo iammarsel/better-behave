@@ -12,8 +12,9 @@ body {
   }
   .messages-container {
     display: flex;
-    flex-direction: column-reverse;
-    max-height: 400px; /* Adjust as needed */
+    flex-direction: column;
+    max-width: 600px;
+    max-height: 400px;
     overflow-y: auto;
     border: 1px solid #ccc;
     padding: 10px;
