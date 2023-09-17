@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom'; // Import useNavigate
 function SignIn() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [errText, setErrText] = useState('');
   const navigate = useNavigate(); // Create a Navigate object
   
   const signInWithGoogle = () => {
@@ -22,7 +23,7 @@ function SignIn() {
 
       navigate('/');
     } catch (error) {
-      console.error('Sign in failed', error);
+      setErrText('Invalid Info, Try Again!')
     }
   };
 
@@ -43,6 +44,7 @@ function SignIn() {
       />
       <button onClick={handleSignIn}>Sign In</button>
       <button onClick={signInWithGoogle}>Sign In with Google</button>
+      <h3 style={{color: 'red'}}>{errText}</h3>
     </div>
   );
 }

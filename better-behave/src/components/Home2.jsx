@@ -1,28 +1,11 @@
-// import React from 'react'
-// import { NavLink } from 'react-router-dom';
-// function Home2() {
-//   return (
-//     <div>
-//       <h1>Welcome User!</h1>
-//       <h3>Practiced: 10</h3>
-//       <h3>Mastered: 4</h3>
-//       <button>
-//       <NavLink to="/question">
-//         New Interview Practice
-//       </NavLink>
-//       </button>
-//     </div>
-//   )
-// }
 
-// export default Home2;
 import React from 'react';
 import { NavLink, useNavigate } from 'react-router-dom'; // Updated import
-import { auth } from '../firebase';
+import { auth, db } from '../firebase';
 
 function Home2() {
+  console.log("Home")
   const navigate = useNavigate(); // Updated usage
-
   const handleSignOut = async () => {
     try {
       await auth.signOut();
@@ -33,17 +16,23 @@ function Home2() {
     }
   };
 
+  db.collection('sessions').doc('session_template').get().then((data) => {
+    console.log(data.data());
+  });
+  // .update() for changes
+
   return (
     <div>
       <h1>Welcome User!</h1>
       <h3>Practiced: 10</h3>
       <h3>Mastered: 4</h3>
+
       <button onClick={handleSignOut}>Sign Out</button>
       <button>
       <NavLink to="/starter">
         New Interview Practice
       </NavLink>
-            </button>
+      </button>
     </div>
   );
 }

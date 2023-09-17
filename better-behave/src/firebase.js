@@ -1,16 +1,13 @@
-// firebase.js
-
-import { initializeApp } from 'firebase/app';
-import { getAuth } from 'firebase/auth';
-
-// Import the config 
+import firebase from "firebase/compat/app";
+import "firebase/compat/auth";
+import "firebase/compat/firestore";
 import { firebaseConfig } from './firebaseConfig';
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
+// TODO: Replace the following with your app's Firebase project configuration
 
-// Initialize Firebase Auth
-const auth = getAuth(app);
+const firebaseApp = firebase.initializeApp(firebaseConfig);
 
-// Export auth
-export { auth };
+
+export const auth = firebaseApp.auth();
+export const db = firebaseApp.firestore();
+export default firebaseApp;// firebase.js
