@@ -29,6 +29,10 @@ body {
     word-wrap: break-word;  /* Break long words to prevent overflow */
 }
 
+/* Change the scrollbar thumb color for Webkit-based browsers */
+.messages-container ::-webkit-scrollbar-thumb {
+  background-color: #FECC57; /* Change the color to #FECC57 */
+}
 
 .live-transcript-container {
     margin-top: auto;  /* Pushes the container to the bottom */
