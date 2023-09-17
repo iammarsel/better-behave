@@ -29,9 +29,8 @@ Get insights that make a real difference, and watch your confidence soar.
 
 Ready to ace that interview? Let's dive in! 💪
 
-## How to Start Practicing
-In our code you need to do npm install first
-open the .env file and find the API key, insert it into question.jsx. 
+## How to Run the Project
+In our code, you need to do npm install. First open the .env file and find the API key; remove "A" at the end of the API key and insert it into the question.jsx>API_Key. 
 
 ## Authors
 
