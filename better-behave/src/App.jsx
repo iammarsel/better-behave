@@ -7,6 +7,7 @@ import { useEffect } from "react";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Question from "./components/Question";
+import Starter from "./components/Starter";
 import JobContext from "./components/JobContext";
 // import firebase from 'firebase/app';
 import { auth } from "./firebase";
@@ -30,7 +31,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App" style={{height: '100%', width:'100%',alignContent:'center'}}>
+    <div className="App" >
       <JobContext.Provider
         value={{ selectedJob, setSelectedJob, selectedType, setSelectedType }}
       >
