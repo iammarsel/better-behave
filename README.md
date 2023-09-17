@@ -31,11 +31,10 @@ Ready to ace that interview? Let's dive in! 💪
 
 ## How to Start Practicing
 In our code you need to do npm install first
-open the questions jsx file and find the API key, remove any dollar sign you see. 
+open the .env file and find the API key, insert it into question.jsx. 
 
 ## Authors
 
-- [@octokatherine](https://www.github.com/octokatherine)
 - [@AsadbekNematov](https://github.com/AsadbekNematov)
 - [@iammarsel](https://github.com/iammarsel)
 - [@pavankumarm2505](https://github.com/pavankumarm2505)
