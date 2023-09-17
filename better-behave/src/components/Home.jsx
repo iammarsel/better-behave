@@ -24,10 +24,21 @@
 // export default Home;
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import logo from "../assets/logo_gimmejob.jpeg";
 
 function Home() {
   return (
     <div>
+      <img
+        src={logo} // Replace with the URL of your logo image
+        alt="Logo"
+        style={{
+          position: 'absolute',
+          top: '20px', // Adjust the top position as needed
+          left: '20px', // Adjust the left position as needed
+          width: '250px', // Adjust the width of the logo as needed
+        }}
+      />
       <h1>Welcome To GimmeJob!</h1>
       <button>
         <NavLink to="/signin">Sign In</NavLink>

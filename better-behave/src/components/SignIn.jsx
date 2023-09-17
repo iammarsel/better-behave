@@ -10,6 +10,8 @@ import { auth } from "../firebase";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logo_gimmejob.jpeg";
 
+
+
 function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -111,9 +113,9 @@ function SignIn() {
       >
         Sign In
       </button>
-      <button
+      <button className="fl flex my-14"
   onClick={signInWithGoogle}
-  style={googleButtonStyle}
+  
   onMouseEnter={(e) => {
     e.target.style.backgroundColor = '#F2F2F2';
   }}
@@ -127,7 +129,7 @@ function SignIn() {
     e.target.style.backgroundColor = '#F2F2F2';
   }}
 >
-  <i className="fa fa-google" style={{ marginRight: '10px' }}></i> Sign In with Google
+  <img src="https://upload.wikimedia.org/wikipedia/commons/5/53/Google_%22G%22_Logo.svg" className=" w-5" style={{ marginRight: '10px' }}></img> Sign In with Google
 </button>
       <h3 style={{ color: "red" }}>{errText}</h3>
     </div>
@@ -135,3 +137,4 @@ function SignIn() {
 }
 
 export default SignIn;
+//fa-solid fa-user
