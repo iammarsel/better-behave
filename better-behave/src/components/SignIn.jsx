@@ -19,6 +19,10 @@ function SignIn() {
     borderRadius: '8px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
+    width: '100%', // Make the button take full width
+    padding: '12px', // Increase padding for better spacing
+    fontSize: '1.2em', // Increase font size
+    fontFamily: 'Arial, sans-serif' // Change font
   };
 
   
@@ -44,12 +48,6 @@ function SignIn() {
     marginBottom: '1em' // Add some space at the bottom of the input
   };
 
-  const buttonStyle = {
-    width: '100%', // Make the button take full width
-    padding: '12px', // Increase padding for better spacing
-    fontSize: '1.2em', // Increase font size
-    fontFamily: 'Arial, sans-serif' // Change font
-  };
 
   return (
     <div
