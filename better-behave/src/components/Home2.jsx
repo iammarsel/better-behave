@@ -21,11 +21,24 @@ function Home2() {
   });
   // .update() for changes
 
+  const data = {
+    profession: 'Teacher',
+    score: '71',
+    date: 'testinggggg'
+  };
+  
+  db.collection('sessions').doc('Question 1').set(data);
+  const iframeStyle = {
+    width: '150vh',
+    height: '50vh',
+    border: 'none',
+  };
   return (
     <div>
       <h1>Welcome User!</h1>
       <h3>Practiced: 10</h3>
       <h3>Mastered: 4</h3>
+      <iframe src='http://localhost:5000/' style={iframeStyle} title="Chart" /> 
 
       <button onClick={handleSignOut}>Sign Out</button>
       <button>

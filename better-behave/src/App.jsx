@@ -7,11 +7,9 @@ import { useEffect } from "react";
 import SignIn from "./components/SignIn";
 import SignUp from "./components/SignUp";
 import Question from "./components/Question";
-import Starter from "./components/Starter";
 import JobContext from "./components/JobContext";
 // import firebase from 'firebase/app';
 import { auth } from "./firebase";
-import ChartComponent from "./components/chartComponent";
 
 
 function App() {
@@ -32,7 +30,7 @@ function App() {
   }, []);
 
   return (
-    <div className="App">
+    <div className="App" style={{height: '100%', width:'100%',alignContent:'center'}}>
       <JobContext.Provider
         value={{ selectedJob, setSelectedJob, selectedType, setSelectedType }}
       >
@@ -42,8 +40,6 @@ function App() {
             <Route path="/signin" element={<SignIn />} />
             <Route path="/signup" element={<SignUp />} />
             <Route path="/question" element={<Question />} />
-            <Route path="/starter" element={<Starter />} />
-            <Route path="/chart" element={<ChartComponent />} />
           </Routes>
         </Router>
       </JobContext.Provider>
