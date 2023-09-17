@@ -40,8 +40,10 @@ function Home2() {
       <h3>Mastered: 4</h3>
       <button onClick={handleSignOut}>Sign Out</button>
       <button>
-        <NavLink to="/question">New Interview Practice</NavLink>
-      </button>
+      <NavLink to="/starter">
+        New Interview Practice
+      </NavLink>
+            </button>
     </div>
   );
 }
