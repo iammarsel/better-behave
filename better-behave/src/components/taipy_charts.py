@@ -1,7 +1,7 @@
 # taipy_charts.py
 
 from flask import Flask, send_file 
-from taipy import Gui
+from taipy import Gui, Chart
 # Generate random data
 import random
 
@@ -14,7 +14,7 @@ data = {
 app = Flask(__name__) 
 
 # Generate chart
-gui = Gui("<|{data}|chart|>").run()
+gui = Gui(page=Chart(data))
 gui.save('chart.png')
 
 # API route to serve chart PNG
