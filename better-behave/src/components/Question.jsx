@@ -20,6 +20,7 @@ function Question() {
     fetchChatGPT(transcript);
   };
 
+
   const {
     transcript,
     listening,
@@ -103,8 +104,8 @@ function Question() {
     ////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////
 
-
-    const API_KEY = "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$$$";
+    
+    const API_KEY = "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";
 
     //////////////////////////////////////////////////////////////////////////////////////////////////////////////
     ////////////////////////////////////////////////////////////////////////////////////////  
@@ -206,7 +207,7 @@ function Question() {
         {messages.map((message, index) => (
           <div
             key={index}
-            className={`p-4 rounded-3xl shadow-sm mb-2 ${index % 2 === 0 ? " rounded-bl-none bg-yellow-200 text-blue-900 bg-[#FECC57] text-[#1A244D]" : " rounded-br-none bg-blue-200  text-black"}`}
+            className={`p-4 rounded-3xl shadow-sm items-center mb-2 ${index % 2 === 0 ? " rounded-bl-none bg-yellow-200 text-blue-900 bg-[#FECC57] text-[#1A244D]" : " rounded-br-none bg-blue-200  text-black"}`}
           >
             {message}
           </div>
