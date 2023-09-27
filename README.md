@@ -1,4 +1,4 @@
-# GimmeJob💡💡
+# 💡GimmeJob💡
 
 Hey there! 👋
 
